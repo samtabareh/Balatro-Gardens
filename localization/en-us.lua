@@ -7,21 +7,6 @@ return {
                     "Start run with",
                     "{C:baga_infinity_ring}Infinity{} and {C:baga_tremor_bat}Tremor"
                 }
-            },
-            b_baga_frozen_clouds = {
-                name = "Frozen Clouds Deck",
-                text = {
-                    "Start run with",
-                    "{C:baga_frozen_ice}Frozen{} and {C:baga_clouded_lightning}Clouded",
-                    "{C:red}X#1#{} base Blind size"
-                }
-            },
-            b_baga_fluttering_petals = {
-                name = "Fluttering Petals Deck",
-                text = {
-                    "Start run with",
-                    "{C:rare}Flutter{} and {C:uncommon}Black Lotus"
-                }
             }
         },
         Enhanced = {
@@ -32,16 +17,6 @@ return {
                     "-{X:mult,C:white}X#2#{} every trigger",
                     "Destroyed when {X:mult,C:white}Xmult{}",
                     "reaches 1"
-                },
-            },
-            m_baga_lost = {
-                name = "Lost Card",
-                text = {
-                    "{C:green}#1# in #2#{} chance to",
-                    "upgrade played hand level",
-                    "{C:green}#1# in #3#{} chance to",
-                    "be destroyed",
-                    "no rank or suit"
                 },
             }
         },
@@ -98,28 +73,27 @@ return {
             j_baga_tremor = {
                 name = "{C:baga_tremor_bat}Tremor",
                 text = {
-                    "{C:green}#1# in #2#{} chance to",
-                    "add {C:dark_edition}Polychrome{} or {C:dark_edition}Negative",
-                    "to a random joker at",
-                    "the end of round",
+                    "{C:green}#1# in number of owned",
+                    "{C:green}Jokers (#2#){} chance to add",
+                    "{C:dark_edition}Negative{} to a random Joker",
+                    "at the end of round",
                 }
             },
             j_baga_frozen = {
                 name = "{C:baga_frozen_ice}Frozen",
                 text = {
-                    "{C:green}#1# in #2#{} chance to",
-                    "add your highest mult",
-                    "of the round to {C:mult}mult",
-                    "{C:inactive}(Currently: {C:mult}+#3#{}{C:inactive})"
+                    "Copies ability of {C:attention}Joker{}",
+                    "to the left, debuffs",
+                    "{C:attention}Joker{} to the right"
                 }
             },
             j_baga_clouded = {
                 name = "{C:baga_clouded_lightning}Clouded",
                 text = {
-                    "{X:baga_clouded_cloud,V:1,E:1,s:1.1}CLOUDED"
-                    --,"{C:green}#1# in #2#{} chance to",
-                    --"multiply (if not, add)",
-                    --"#3#% to #4#% of blind to mult"
+                    "Each owned joker adds",
+                    "{X:mult,C:white}1X-5X{} Mult to this card",
+                    "based on its rarity",
+                    "{C:inactive}(Currently {X:mult,C:white}#1#X{C:inactive} Mult)"
                 }
             },
         },

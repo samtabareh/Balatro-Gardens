@@ -1,36 +1,38 @@
-# Tarots
+## Content
 
-- Lethal: Makes 1 highlighted card Wounded
+### Planets
+
+- UP: Pluto planet card renamed and reskinned to the UP logo
+
+### Tarots
+
+- Ripped: Makes 1 highlighted card Wounded
 
 - Black Lotus: Adds a copy of 1 highlighted playing card to the deck
 
-# Planets
+### Spectrals
 
-- UP: Pluto card renamed and reskinned to Unlike Pluto logo
-
-# Spectrals
-
-- Ripped: Destroys 3 highlighted playing cards
+- Lethal: Destroys 3 highlighted playing cards
 
 - Dig: Creates a Ghost Joker
 
-# Jokers
+### Jokers
 
-##  Uncommon
+####  Uncommon
 
 - One on One: 2X Mult if hand contains 2 different face cards (ex: J and Q or Q and K)
 
 - Fragile: Makes scored face cards Wounded
 
-- Misery: 0.25X Mult per face card held in hand when hand is played
+- Misery: +0.25X Mult per face card held in hand when hand is played
 
-## Rare
+#### Rare
 
-- Flutter: Gains 0.5X Mult when a Wounded card is destroyed
+- Flutter: Gains 1X Mult when a card is destroyed, resets when Boss Blind is defeated
 
 - Lost: Destroys a random card held in hand at the end of round
 
-## Ghost
+#### Ghost
 
 - Infinity: Guarantees all listed probabilities. 1 in 1000 chance of being destroyed at end of round
 
@@ -40,16 +42,22 @@
 
 - Clouded: 2.5X Mult per joker owned. Debuffed if joker slots are full
 
-# Enhancements
+### Enhancements
 
 - Wounded: 2X Mult. -0.2X when played (destroyed when multiplier reaches 1)
 
-# Vouchers
+### Vouchers
 
 - Glory: +1 Ante
 
 - Victory: +2 Joker Slots
 
-# Decks
+### Decks
 
 - Infinite Tremors: Start with Eternal Infinity and Tremor
+
+## Credits
+
+- [VanillaRemade](https://github.com/nh6574/VanillaRemade), for their amazing work, the code helped me a ton figuring out how Balatro modding works!
+- [Unlike Pluto](https://www.youtube.com/@UnlikePluto) for making the best musich❤️
+- [Phuoc](https://www.instagram.com/phooknguyen) for the songs' amazing artworks!

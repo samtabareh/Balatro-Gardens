@@ -2,11 +2,11 @@
 	"id": "BalatroGardens",
 	"name": "Balatro Gardens",
 	"author": ["SamTB"],
-	"description": "A Balatro mod inspired by Unlike Pluto's Ghost Gardens",
+	"description": "A Balatro mod themed around the Ghost Gardens album by Unlike Pluto",
 	"badge_colour": "fb8600", 
 	"prefix": "baga",
 	"main_file": "BalatroGardens.lua",
 	"priority": -1,
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"dependencies": []
 }

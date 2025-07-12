@@ -15,11 +15,11 @@ SMODS.Joker {
     key = "infinity",
     blueprint_compat = false,
     rarity = "baga_ghost",
-    cost = 8,
+    cost = 20,
     atlas = "j_Ghosts",
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
-    config = { extra = { odds = 1000, multiplier = 1000 } },
+    config = { extra = { odds = 1000, multiplier = 1000000000 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.odds, card.ability.extra.multiplier } }
     end,
@@ -45,9 +45,7 @@ SMODS.Joker {
                         return true
                     end
                 }))
-                return {
-                    message = "Went To Infinity!"
-                }
+                return { message = "Went To Infinity!" }
             end
         end
     end,
@@ -68,23 +66,18 @@ SMODS.Joker {
     key = "tremor",
     blueprint_compat = true,
     rarity = "baga_ghost",
-    cost = 8,
+    cost = 20,
     atlas = "j_Ghosts",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    config = { extra = { odds = 2 } },
+    config = { extra = { odds = 1 } },
     loc_vars = function(self, info_queue, card)
-        -- To not make a mess of info boxes if it has an edition
-        if card.edition then
-            if not card.edition.polychrome then info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome end
-            if not card.edition.negative then info_queue[#info_queue + 1] = G.P_CENTERS.e_negative end
-        else
-            info_queue[#info_queue + 1] = G.P_CENTERS.e_polychrome
-            info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
-        end
+        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
         return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds } }
     end,
     calculate = function(self, card, context)
+        if G.jokers then card.ability.extra.odds = #G.jokers.cards end
+
         if context.end_of_round and context.game_over == false and context.main_eval and
         pseudorandom("baga_tremor") < G.GAME.probabilities.normal / card.ability.extra.odds then
             local eligible_jokers = SMODS.Edition:get_edition_cards(G.jokers, true)
@@ -95,7 +88,7 @@ SMODS.Joker {
                     delay = 0.4,
                     func = function()
                         local edition = poll_edition(nil, nil, false, true,
-                            { "e_polychrome", "e_negative" })
+                            { "e_negative" })
                         joker:set_edition(edition, true)
                         card:juice_up(0.3, 0.5)
                         return true
@@ -111,74 +104,108 @@ SMODS.Joker {
     key = "frozen",
     blueprint_compat = true,
     rarity = "baga_ghost",
-    cost = 8,
+    cost = 20,
     atlas = "j_Ghosts",
     pos = { x = 2, y = 0 },
     soul_pos = { x = 2, y = 1 },
-    config = { mult = 0, extra = { odds = 2 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds, card.ability.mult } }
+        if card.area and card.area == G.jokers then
+            local other_joker
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i - 1] end
+            end
+            local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
+            }
+            return { main_end = main_end }
+        end
     end,
     calculate = function(self, card, context)
-        -- At end of round, reset mult
-        if context.main_eval and not context.blueprint then
-            -- Reset mult at end of round
-            if context.end_of_round and context.game_over == false then
-                card.ability.mult = 0
-                return {
-                    message = "Reset!",
-                    colour = HEX("a7cee6")
-                }
-            end
-            -- Set mult after hand is done IF mult is higher 
-            if context.after and mult and mult > card.ability.mult then
-                card.ability.mult = mult
-                return {
-                    message = "New Mult!",
-                    colour = HEX("a7cee6")
-                }
-            end
+        local index = 0
+        local debuff_joker = nil
+        local copy_joker = nil
+
+        for i = 1, #G.jokers.cards do
+            if card == G.jokers.cards[i] then index = i end
         end
-        -- Add mult (probably)
-        if
-        context.joker_main and
-        pseudorandom("baga_frozen") < G.GAME.probabilities.normal / card.ability.extra.odds
-        then
-            return {
-                mult = card.ability.mult
-            }
+        copy_joker = G.jokers.cards[index - 1]
+        debuff_joker = G.jokers.cards[index + 1]
+        
+        -- Debuffs the next joker
+        if debuff_joker and not debuff_joker.debuff then
+            SMODS.debuff_card(debuff_joker, true, "frozen")
         end
+
+        -- To clean up old debuffed joker(s) (that aren't the next joker)
+        for i = 1, #G.jokers.cards do
+            local joker = G.jokers.cards[i]
+            if joker.debuff and joker ~= G.jokers.cards[index + 1] then SMODS.debuff_card(joker, false, "frozen") end
+        end
+        
+        -- Copies the joker before
+        local ret = SMODS.blueprint_effect(card, copy_joker, context)
+        if ret then
+            ret.colour = G.C.FROZEN_ICE
+        end
+
+        return ret
     end
 }
 
 --- Clouded
-----  1 in 3 chance to multiply mult by (2 in 3 to add to mult, but value is x5) 2 to 5.
 SMODS.Joker {
     key = "clouded",
     blueprint_compat = true,
     rarity = "baga_ghost",
-    cost = 8,
+    cost = 20,
     atlas = "j_Ghosts",
     pos = { x = 3, y = 0 },
     soul_pos = { x = 3, y = 1 },
-    config = { extra = { odds = 3, min = 2, max = 5, multiplier = 5 } },
+    config = {
+        extra = {
+            Xmult = 0,
+            Xmult_gain = {
+                ["baga_ghost"] = 5,
+                ["cry_cursed"] = 2,
+                ["cry_epic"] = 3,
+                ["cry_exotic"] = 5
+            }
+        }
+    },
     loc_vars = function(self, info_queue, card)
-        return { vars = { colours = { HEX("b490d5") } } }
+        return { vars = { card.ability.extra.Xmult } }
     end,
     calculate = function(self, card, context)
-        if context.joker_main and G.GAME.blind then
-            local ret = {}
-            -- Get mult
-            -- Assign Xmult or mult
-            if pseudorandom("baga_clouded") < G.GAME.probabilities.normal / card.ability.extra.odds then
-                ret = { Xmult = pseudorandom("baga_clouded", card.ability.extra.min, card.ability.extra.max) }
-            else
-                ret = { mult = pseudorandom("baga_clouded",
-                card.ability.extra.min*card.ability.extra.multiplier,
-                card.ability.extra.max*card.ability.extra.multiplier)
-            }
+        card.ability.extra.Xmult = 0
+
+        for i = 1, #G.jokers.cards do
+            local joker = G.jokers.cards[i]
+            local rarity = joker.config.center.rarity
+
+            -- For when a jokers rarity is modded
+            if type(rarity) == "string" then
+                if card.ability.extra.Xmult_gain[rarity] == nil then rarity = 1
+                else rarity = card.ability.extra.Xmult_gain[rarity] end
             end
-            return ret
+            
+            card.ability.extra.Xmult = card.ability.extra.Xmult + rarity
+        end
+        
+        if context.joker_main then
+            return { Xmult = card.ability.extra.Xmult }
         end
     end
 }

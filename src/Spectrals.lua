@@ -2,6 +2,37 @@
 
 --- Dig
 SMODS.Consumable {
+    key = "lethal",
+    set = "Spectral",
+    atlas = "Consumables",
+    pos = { x = 0, y = 0 },
+    config = { max_highlighted = 3 },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.max_highlighted } }
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            delay = 0.4,
+            func = function()
+                play_sound("tarot1")
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            delay = 0.2,
+            func = function()
+                SMODS.destroy_cards(G.hand.highlighted)
+                return true
+            end
+        }))
+        delay(0.3)
+    end
+}
+    --- Dig
+SMODS.Consumable {
     key = "dig",
     set = "Spectral",
     atlas = "Consumables",

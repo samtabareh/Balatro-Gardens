@@ -8,25 +8,6 @@ SMODS.Back {
     config = { jokers = { "j_baga_infinity", "j_baga_tremor" } }
 }
 
---- Frozen Clouds
-SMODS.Back {
-    key = "frozen_clouds",
-    atlas = "Extras",
-    pos = { x = 1, y = 0 },
-    config = { ante_scaling = 2, jokers = { "j_baga_frozen", "j_baga_clouded" } },
-    loc_vars = function(self, info_queue, back)
-        return { vars = { self.config.ante_scaling } }
-    end
-}
-
---- Fluttering Black Petals
-SMODS.Back {
-    key = "fluttering_petals",
-    atlas = "Extras",
-    pos = { x = 2, y = 0 },
-    config = { jokers = { "j_baga_flutter", "j_baga_black_lotus" } }
-}
-
 -- Enhancements
 
 --- Wounded
@@ -44,7 +25,7 @@ SMODS.Enhancement {
                 trigger = "after",
                 delay = 0.2,
                 func = function()
-                    SMODS.destroy_cards(card)
+                    card:start_dissolve()
                     return true
                 end
             }))
@@ -64,36 +45,6 @@ SMODS.Enhancement {
     end
 }
 
---- Lost
-SMODS.Enhancement {
-    key = "lost",
-    atlas = "Extras",
-    pos = { x = 0, y = 0 },
-    config = { extra = { upgrade_odds = 2, lost_odds = 4 } },
-    replace_base_card = true,
-    no_rank = true,
-    no_suit = true,
-    always_scores = true,
-    loc_vars = function(self, info_queue, card)
-        return { vars = { G.GAME.probabilities.normal, card.ability.extra.upgrade_odds, card.ability.extra.lost_odds } }
-    end,
-    calculate = function(self, card, context)
-        
-        
-        -- Upgrade hand level
-        if context.cardarea == G.play and context.before and pseudorandom("lost") < G.GAME.probabilities.normal / card.ability.extra.upgrade_odds then
-            level_up_hand(card, G.GAME.last_hand_played)
-        end
-        -- Destroy self
-        if context.destroy_card and context.cardarea == G.play and context.destroy_card == card and pseudorandom("glass") < G.GAME.probabilities.normal / card.ability.extra.lost_odds then
-            return {
-                message = "Lost!",
-                remove = true
-            }
-        end
-    end,
-}
-
 -- Gradients
 
 --- Clouded Cloud
@@ -104,8 +55,7 @@ SMODS.Gradient {
         HEX("30312c"),
         HEX("373737"),
         HEX("6a6a69")
-    },
-    cycles = 20
+    }
 }
 
 --- Clouded Lightning
@@ -142,9 +92,7 @@ SMODS.Gradient {
     key = "tremor_bat",
     colours = {
         HEX("000000"),
-        HEX("5a5a5a"),
-        HEX("fefefe"),
-        HEX("5a5a5a")
+        HEX("fefefe")
     }
 }
 
@@ -175,10 +123,6 @@ SMODS.Voucher {
         ease_ante(card.ability.extra.addition)
         G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
         G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + card.ability.extra.addition
-
-        -- Apply discards change
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.extra.addition
-        ease_discard(card.ability.extra.addition)
     end
 }
 
@@ -187,21 +131,16 @@ SMODS.Voucher {
     key = "victory",
     atlas = "Vouchers",
     pos = { x = 0, y = 0 },
-    config = { extra = { addition = 1 } },
+    config = { extra = { addition = 2 } },
     requires = { "v_baga_glory" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.addition } }
     end,
     redeem = function(self, card)
-        -- Apply ante change
-        ease_ante(card.ability.extra.addition)
-        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
-        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + card.ability.extra.addition
-
         G.E_MANAGER:add_event(Event({
             func = function()
                 if G.jokers then
-                    G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+                    G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.addition
                 end
                 return true
             end,
