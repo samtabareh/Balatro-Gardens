@@ -84,7 +84,7 @@ SMODS.Joker {
         if context.individual and context.cardarea == G.hand and not context.end_of_round and context.other_card:is_face() and not context.blueprint then
             if context.other_card.debuff then
                 return {
-                    message = localize('k_debuffed'),
+                    message = localize("k_debuffed"),
                     colour = G.C.RED
                 }
             else

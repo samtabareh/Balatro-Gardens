@@ -1,0 +1,125 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 1
+
+# Invisible Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+self.ability.invis_rounds = self.ability.invis_rounds + 1
+if self.ability.invis_rounds == self.ability.extra then
+    local eval = function(card) return not card.REMOVED end
+    juice_card_until(self, eval, true)
+end
+return {
+    message = (self.ability.invis_rounds < self.ability.extra) and (self.ability.invis_rounds..'/'..self.ability.extra) or localize('k_active_ex'),
+    colour = G.C.FILTER
+}
+'''
+position = "at"
+payload = '''
+if not is_joker_frozen({ card = self }) then
+    self.ability.invis_rounds = self.ability.invis_rounds + 1
+    if self.ability.invis_rounds == self.ability.extra then
+        local eval = function(card) return not card.REMOVED end
+        juice_card_until(self, eval, true)
+    end
+    return {
+        message = (self.ability.invis_rounds < self.ability.extra) and (self.ability.invis_rounds..'/'..self.ability.extra) or localize('k_active_ex'),
+        colour = G.C.FILTER
+    }
+end
+'''
+match_indent = true
+
+# Hit The Road Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.name == 'Hit the Road' and self.ability.x_mult > 1 then
+    self.ability.x_mult = 1
+'''
+position = "at"
+payload = '''
+if self.ability.name == 'Hit the Road' and self.ability.x_mult > 1 and not is_joker_frozen({ card = self }) then
+    self.ability.x_mult = 1
+'''
+match_indent = true
+
+# Popcorn Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+else
+    self.ability.mult = self.ability.mult - self.ability.extra
+'''
+position = "at"
+payload = '''
+elseif not is_joker_frozen({ card = self }) then 
+    self.ability.mult = self.ability.mult - self.ability.extra
+'''
+match_indent = true
+
+# Turtle Bean Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+else
+    self.ability.extra.h_size = self.ability.extra.h_size - self.ability.extra.h_mod
+'''
+position = "at"
+payload = '''
+elseif not is_joker_frozen({ card = self }) then 
+    self.ability.extra.h_size = self.ability.extra.h_size - self.ability.extra.h_mod
+'''
+match_indent = true
+
+# Egg Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.name == 'Egg' then
+    self.ability.extra_value = self.ability.extra_value + self.ability.extra
+'''
+position = "at"
+payload = '''
+if self.ability.name == 'Egg' and not is_joker_frozen({ card = self }) then
+    self.ability.extra_value = self.ability.extra_value + self.ability.extra
+'''
+match_indent = true
+
+# To Do List Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.name == 'To Do List' then
+    local _poker_hands = {}
+'''
+position = "at"
+payload = '''
+if self.ability.name == 'To Do List' and not is_joker_frozen({ card = self }) then
+    local _poker_hands = {}
+'''
+match_indent = true
+
+# Loyalty Card Joker
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.name == 'Loyalty Card' then
+    self.ability.loyalty_remaining = (self.ability.extra.every-1-(G.GAME.hands_played - self.ability.hands_played_at_create))%(self.ability.extra.every+1)
+'''
+position = "at"
+payload = '''
+if self.ability.name == 'Loyalty Card' and not is_joker_frozen({ card = self }) then
+    self.ability.loyalty_remaining = (self.ability.extra.every-1-(G.GAME.hands_played - self.ability.hands_played_at_create))%(self.ability.extra.every+1)
+'''
+match_indent = true

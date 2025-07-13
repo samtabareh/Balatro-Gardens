@@ -15,7 +15,7 @@ SMODS.Consumable {
 
 --- Misery
 SMODS.Consumable {
-    key = "black_lotus",
+    key = "lotus",
     set = "Tarot",
     atlas = "Consumables",
     pos = { x = 0, y = 0 },

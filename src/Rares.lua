@@ -16,14 +16,14 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.remove_playing_cards and not context.blueprint then
             card.ability.extra.Xmult = card.ability.extra.Xmult + #context.removed * card.ability.extra.Xmult_gain
-            return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } } }
+            return { message = localize { type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } } }
         end
         
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
             if G.GAME.blind.boss and card.ability.extra.Xmult > 1 then
                 card.ability.extra.Xmult = 1
                 return {
-                    message = localize('k_reset'),
+                    message = localize("k_reset"),
                     colour = G.C.RED
                 }
             end

@@ -16,6 +16,10 @@
 
 - Dig: Creates a Ghost Joker
 
+### Stickers
+
+- Frozen: Freezes time based Jokers and Stickers for 1 round
+
 ### Jokers
 
 ####  Uncommon
@@ -38,9 +42,9 @@
 
 - Tremor: 1 in the number of owned  jokers' chance to add Negative to a random joker at the end of round
 
-- Frozen: Copies the joker to the left. Debuffs the joker to the right
+- Frozen: Makes the Joker to the left Frozen at the start of round
 
-- Clouded: 2.5X Mult per joker owned. Debuffed if joker slots are full
+- Clouded: Each owned joker adds 1X-5X Mult to this card based on its rarity
 
 ### Enhancements
 

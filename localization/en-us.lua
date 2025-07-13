@@ -82,9 +82,9 @@ return {
             j_baga_frozen = {
                 name = "{C:baga_frozen_ice}Frozen",
                 text = {
-                    "Copies ability of {C:attention}Joker{}",
-                    "to the left, debuffs",
-                    "{C:attention}Joker{} to the right"
+                    "Makes the Joker",
+                    "to the left {C:baga_frozen_ice}Frozen",
+                    "at the start of round"
                 }
             },
             j_baga_clouded = {
@@ -96,6 +96,16 @@ return {
                     "{C:inactive}(Currently {X:mult,C:white}#1#X{C:inactive} Mult)"
                 }
             },
+        },
+        Other = {
+            baga_frozen = {
+                name = "Frozen",
+                text = {
+                    "Freezes values of round",
+                    "based Jokers and Stickers",
+                    "for {C:attention}#1#{} round"
+                }
+            }
         },
         Planet = {
             c_pluto = {
@@ -115,7 +125,8 @@ return {
             k_baga_ghost = "Ghost"
         },
         labels = {
-            baga_ghost = "Ghost"
+            baga_ghost = "Ghost",
+            baga_frozen = "Frozen"
         }
     }
 }

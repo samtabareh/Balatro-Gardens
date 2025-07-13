@@ -107,6 +107,94 @@ SMODS.Consumable:take_ownership(
     false
 )
 
+-- Stickers
+
+-- Frozen
+SMODS.Sticker {
+    key = "frozen",
+    badge_colour = HEX("afe4f2"),
+    atlas = "Extras",
+    pos = { x = 2, y = 0 },
+    apply = function(self, card, val)
+        card.ability[self.key] = val
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { 1 } }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind and not context.repetition and not context.individual then
+            card:calculate_frozen()
+        end
+    end
+}
+
+function Card:calculate_frozen()
+    -- Dont unfreeze if its gonna be frozen again (aka next joker is j_baga_frozen)
+    local joker
+    for i = 1, #G.jokers.cards do if G.jokers.cards[i] == self then joker = G.jokers.cards[i + 1] end end
+    
+    if joker and joker.ability.name == "j_baga_frozen" then return end
+
+    -- Unfreeze
+    if self.ability.baga_frozen then
+        self.ability.baga_frozen = false
+        card_eval_status_text(self, "extra", nil, nil, nil, {
+            message = "Unfrozen!",
+            colour = G.C.FROZEN_ICE,
+            delay = 0.45
+        })
+    end
+end
+
+function is_joker_frozen(t)
+    if not G.jokers then return false end
+
+    if t.name then
+        for i = 1, #G.jokers.cards do
+            local joker = G.jokers.cards[i]
+            if joker.ability.name == t.name and joker.ability.baga_frozen then return true end
+        end
+        return false
+    elseif t.card then return t.card.ability.baga_frozen
+    else return false end
+end
+
+local care_ref = Card.calculate_rental
+function Card:calculate_rental()
+    if is_joker_frozen({ card = self }) then return end
+    care_ref(self)
+end
+
+local cape_ref = Card.calculate_perishable
+function Card:calculate_perishable()
+    if is_joker_frozen({ card = self }) then return end
+    cape_ref(self)
+end
+
+local reid_ref = reset_idol_card
+function reset_idol_card()
+    if is_joker_frozen({ name = "The Idol" }) then return end
+    reid_ref()
+end
+
+local rean_ref = reset_ancient_card
+function reset_ancient_card()
+    if is_joker_frozen({ name = "Ancient Joker" }) then return end
+    rean_ref()
+end
+
+local reca_ref = reset_castle_card
+function reset_castle_card()
+    if is_joker_frozen({ name = "Castle" }) then return end
+    reca_ref()
+end
+
+local rema_ref = reset_mail_rank
+function reset_mail_rank()
+    if is_joker_frozen({ name = "Mail-In Rebate" }) then return end
+    rema_ref()
+end
+
 -- Vouchers
 
 --- Glory

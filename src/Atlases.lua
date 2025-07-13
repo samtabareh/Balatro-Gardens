@@ -29,7 +29,7 @@ SMODS.Atlas{
 --- Consumables (Tarots, Spectrals)
 SMODS.Atlas{
     key = "Consumables",
-    path = "j_Uncommons.png",
+    path = "Tarots.png",
     px = 71,
     py = 95
 }

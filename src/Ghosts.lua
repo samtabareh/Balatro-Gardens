@@ -70,16 +70,19 @@ SMODS.Joker {
     atlas = "j_Ghosts",
     pos = { x = 0, y = 0 },
     soul_pos = { x = 0, y = 1 },
-    config = { extra = { odds = 1 } },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
-        return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds } }
+        -- Only shows negative tooltip if it isnt negative itself
+        if card.edition then
+            if not card.edition.negative then
+                info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+            end
+        else info_queue[#info_queue + 1] = G.P_CENTERS.e_negative end
+
+        return { vars = { G.GAME.probabilities.normal, #G.jokers.cards } }
     end,
     calculate = function(self, card, context)
-        if G.jokers then card.ability.extra.odds = #G.jokers.cards end
-
         if context.end_of_round and context.game_over == false and context.main_eval and
-        pseudorandom("baga_tremor") < G.GAME.probabilities.normal / card.ability.extra.odds then
+        pseudorandom("baga_tremor") < G.GAME.probabilities.normal / #G.jokers.cards then
             local eligible_jokers = SMODS.Edition:get_edition_cards(G.jokers, true)
             local joker = pseudorandom_element(eligible_jokers, pseudoseed("random_tremor"))
             if joker then
@@ -102,19 +105,26 @@ SMODS.Joker {
 --- Frozen
 SMODS.Joker {
     key = "frozen",
-    blueprint_compat = true,
     rarity = "baga_ghost",
+    blueprint_compat = true,
+    perishable_compat = false,
     cost = 20,
     atlas = "j_Ghosts",
     pos = { x = 2, y = 0 },
     soul_pos = { x = 2, y = 1 },
     loc_vars = function(self, info_queue, card)
+        if not is_joker_frozen({ card = card }) and SMODS.Stickers.baga_frozen  then
+            info_queue[#info_queue+1] = SMODS.Stickers.baga_frozen
+        end
+        
         if card.area and card.area == G.jokers then
             local other_joker
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i - 1] end
             end
-            local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+            
+            local compatible = other_joker and other_joker ~= card and is_freezable(other_joker)
+            
             main_end = {
                 {
                     n = G.UIT.C,
@@ -130,40 +140,54 @@ SMODS.Joker {
                     }
                 }
             }
-            return { main_end = main_end }
+            ret.main_end = main_end
         end
     end,
     calculate = function(self, card, context)
-        local index = 0
-        local debuff_joker = nil
-        local copy_joker = nil
+        if context.setting_blind then
+            -- Finding Joker
+            local joker
+            for i = 1, #G.jokers.cards do if card == G.jokers.cards[i] then joker = G.jokers.cards[i - 1] end end
+            
+            
 
-        for i = 1, #G.jokers.cards do
-            if card == G.jokers.cards[i] then index = i end
-        end
-        copy_joker = G.jokers.cards[index - 1]
-        debuff_joker = G.jokers.cards[index + 1]
-        
-        -- Debuffs the next joker
-        if debuff_joker and not debuff_joker.debuff then
-            SMODS.debuff_card(debuff_joker, true, "frozen")
-        end
+            -- Applying sticker
+            if joker and is_freezable(joker) then
+                SMODS.Stickers.baga_frozen:apply(joker, true)
+            end
 
-        -- To clean up old debuffed joker(s) (that aren't the next joker)
-        for i = 1, #G.jokers.cards do
-            local joker = G.jokers.cards[i]
-            if joker.debuff and joker ~= G.jokers.cards[index + 1] then SMODS.debuff_card(joker, false, "frozen") end
+            return {
+                message = "Frozen!",
+                colour = G.C.FROZEN_ICE
+            }
         end
-        
-        -- Copies the joker before
-        local ret = SMODS.blueprint_effect(card, copy_joker, context)
-        if ret then
-            ret.colour = G.C.FROZEN_ICE
-        end
-
-        return ret
     end
 }
+function is_freezable(card)
+    local freezable_jokers = {
+        "The Idol",
+        "Ancient Joker",
+        "Castle",
+        "Mail-In Rebate",
+        "Invisible Joker",
+        "Hit the Road",
+        "Popcorn",
+        "Turtle Bean",
+        "Egg",
+        "To Do List",
+        "Loyalty Card"
+    }
+    local compatible = false
+    if card then
+        if card.ability.rental or card.ability.perishable then compatible = true end
+
+        for _, joker in ipairs(freezable_jokers) do
+            if compatible then break end
+            if joker == card.ability.name then compatible = true end
+        end
+    end
+    return compatible
+end
 
 --- Clouded
 SMODS.Joker {
