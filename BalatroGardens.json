@@ -6,7 +6,9 @@
 	"badge_colour": "fb8600", 
 	"prefix": "baga",
 	"main_file": "BalatroGardens.lua",
-	"priority": -1,
-	"version": "0.0.3",
-	"dependencies": []
+	"priority": 100,
+	"version": "0.0.4",
+	"dependencies": [
+		"Steamodded (>=1.0.0~BETA-0711a)"
+	]
 }
