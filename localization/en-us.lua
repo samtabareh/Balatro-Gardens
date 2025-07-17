@@ -21,46 +21,53 @@ return {
             }
         },
         Joker = {
-            j_baga_black_lotus = {
-                name = "Black Lotus",
-                text = {
-                    "Retrigger a {C:attention}random{} played",
-                    "card used in scoring",
-                    "{C:attention}#1#{} additional times"
-                }
-            },
+            -- Uncommons
+
             j_baga_one_on_one = {
                 name = "One on One",
                 text = {
-                    "{C:green}#1# in #2#{} chance to make",
-                    "each played {C:attention}face{} card",
-                    "{C:attention}Wounded{}"
+                    "{X:mult,C:white} X#1# {} Mult if hand",
+                    "has scoring {C:attention}face{} cards",
+                    "with different {C:attention}ranks",
+                    "{C:inactive}(ex: {C:attention}J Q, Q K{C:inactive})",
                 }
             },
+            j_baga_fragile = {
+                name = "Fragile",
+                text = {
+                    "All played {C:attention}face{} cards",
+                    "become {C:attention}Wounded{} cards",
+                    "when scored",
+                }
+            },
+            j_baga_misery = {
+                name = "Misery",
+                text = {
+                    "Each {C:attention}face{} card held",
+                    "in hand adds {X:mult,C:white}X#1#{} Mult"
+                }
+            },
+            -- Rares
+
             j_baga_flutter = {
                 name = "Flutter",
                 text = {
-                    "This Joker gains",
-                    "{X:mult,C:white}X#1#{} Mult every time",
-                    "a {C:attention}card{} is scored",
-                    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+                    "This Joker gains {X:mult,C:white}X#1#{} Mult",
+                    "for every {C:attention}destroyed{} card, resets",
+                    "when {C:attention}Boss Blind{} is defeated",
+                    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
                 }
             },
-            j_baga_rip = {
-                name = "Rip It Apart",
+            j_baga_lost = {
+                name = "Lost",
                 text = {
-                    "Destroy 1 random card",
-                    "{C:attention}held in hand{} at",
+                    "Destroys {C:attention}2 random{} cards",
+                    "held in hand at",
                     "the end of round"
                 }
             },
-            j_baga_lost_inside = {
-                name = "Lost Inside",
-                text = {
-                    "The {C:attention}first{} played card",
-                    "used in scoring becomes {C:attention}Lost{}"
-                }
-            },
+            -- Ghosts
+
             j_baga_infinity = {
                 name = "{C:baga_infinity_ring}Infinity",
                 text = {
@@ -83,14 +90,14 @@ return {
                 name = "{C:baga_frozen_ice}Frozen",
                 text = {
                     "Makes the Joker",
-                    "to the left {C:baga_frozen_ice}Frozen",
+                    "to the left {C:attention}Frozen",
                     "at the start of round"
                 }
             },
             j_baga_clouded = {
                 name = "{C:baga_clouded_lightning}Clouded",
                 text = {
-                    "Each owned joker adds",
+                    "Each owned Joker adds",
                     "{X:mult,C:white}1X-5X{} Mult to this card",
                     "based on its rarity",
                     "{C:inactive}(Currently {X:mult,C:white}#1#X{C:inactive} Mult)"
@@ -101,8 +108,8 @@ return {
             baga_frozen = {
                 name = "Frozen",
                 text = {
-                    "Freezes values of round",
-                    "based Jokers and Stickers",
+                    "Freezes values of round-based",
+                    "Jokers and Stickers",
                     "for {C:attention}#1#{} round"
                 }
             }
@@ -115,6 +122,40 @@ return {
                     "{C:attention}#2#",
                     "{C:mult}+#3#{} Mult and",
                     "{C:chips}+#4#{} chips"
+                }
+            }
+        },
+        Spectral = {
+            c_baga_lethal = {
+                name = "Lethal",
+                text = {
+                    "Destroys up to",
+                    "{C:attention}#1#{} selected cards",
+                }
+            },
+            c_baga_dig = {
+                name = "Dig",
+                text = {
+                    "Creates a {C:baga_ghost,E:1}Ghost{} Joker",
+                    "{C:inactive}(Must have room)",
+                }
+            }
+        },
+        Tarot = {
+            c_baga_lotus = {
+                name = "The Lotus",
+                text = {
+                    "Create {C:attention}#1#{} copy of",
+                    "{C:attention}#2#{} selected card",
+                    "in your hand",
+                }
+            },
+            c_baga_ripped = {
+                name = "The Ripped",
+                text = {
+                    "Enhances {C:attention}#1#{} selected",
+                    "card into a",
+                    "{C:attention}#2#",
                 }
             }
         }

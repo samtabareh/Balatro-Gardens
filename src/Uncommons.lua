@@ -14,17 +14,12 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.joker_main then
-            local faces = {
-                ["Jacks"] = 0,
-                ["Queens"] = 0,
-                ["Kings"] = 0
-            }
+            local ranks = {}
             for i = 1, #context.scoring_hand do
-                if context.scoring_hand[i]:get_id() == 11 and faces["Jacks"] == 0 then faces["Jacks"] = 1
-                elseif context.scoring_hand[i]:get_id() == 12 and faces["Queens"] == 0 then faces["Queens"] = 1
-                elseif context.scoring_hand[i]:get_id() == 13 and faces["Kings"] == 0 then faces["Kings"] = 1 end
+                local _c = context.scoring_hand[i]
+                if _c:is_face() and not ranks[_c:get_id()] then ranks[_c:get_id()] = 1 end
             end
-            if faces["Jacks"] + faces["Queens"] + faces["Kings"] >= 2 then
+            if #ranks >= 2 then
                 return { Xmult = card.ability.extra.Xmult }
             end
         end
@@ -58,7 +53,6 @@ SMODS.Joker {
                     }))
                 end
             end
-
             if worked then return { message = "Scarred!" } end
         end
     end
@@ -68,13 +62,13 @@ SMODS.Joker {
 SMODS.Joker {
     key = "misery",
     blueprint_compat = true,
-    rarity = 3,
+    rarity = 2,
     cost = 7,
-    atlas = "j_Rares",
+    atlas = "j_Uncommons",
     pos = { x = 0, y = 0 },
     config = { extra = { Xmult = 1, Xmult_gain = 0.25 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.add, card.ability.extra.Xmult } }
+        return { vars = { card.ability.extra.Xmult_gain, card.ability.extra.Xmult } }
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.jokers and context.after then

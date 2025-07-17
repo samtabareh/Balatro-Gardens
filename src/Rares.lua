@@ -43,22 +43,28 @@ SMODS.Joker {
     cost = 7,
     atlas = "j_Rares",
     pos = { x = 0, y = 0 },
+    config = { extra = { destroyed_cards = 2 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.destroyed_cards } }
+    end,
     calculate = function(self, card, context)
-		if context.end_of_round and context.cardarea == G.jokers
-        --and not context.blueprint and not context.retrigger_joker
-        then
-			local _card = pseudorandom_element(G.hand.cards, pseudoseed("baga_lost"))
-			if _card then
-				G.E_MANAGER:add_event(Event({
-						trigger = "before",
-						delay = 0.25,
-						func = function()
-                            _card:start_dissolve(nil, true)
-							return true
-						end,
-				}))
-				return { message = "Lost!" }
-			end
+		if context.end_of_round and context.cardarea == G.jokers then
+			for i = 1, card.ability.extra.destroyed_cards do
+                -- Select a random card from hand to destroy
+                local _card = pseudorandom_element(G.hand.cards, pseudoseed("baga_lost"))
+                
+                if _card then
+                    G.E_MANAGER:add_event(Event({
+                            trigger = "before",
+                            delay = 0.25,
+                            func = function()
+                                _card:start_dissolve(nil, true)
+                                return true
+                            end,
+                    }))
+                end
+            end
+            return { message = "Lost!" }
 		end
 	end
 }

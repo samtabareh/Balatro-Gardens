@@ -1,6 +1,6 @@
 -- Spectrals
 
---- Dig
+--- Lethal
 SMODS.Consumable {
     key = "lethal",
     set = "Spectral",
@@ -31,7 +31,8 @@ SMODS.Consumable {
         delay(0.3)
     end
 }
-    --- Dig
+
+--- Dig
 SMODS.Consumable {
     key = "dig",
     set = "Spectral",
@@ -55,7 +56,7 @@ SMODS.Consumable {
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
     end,
-    -- Copy pasted from Soul (VanillaRemade) lol
+    -- Thanks VanillaRemade 
     draw = function(self, card, layer)
         if (layer == "card" or layer == "both") and card.sprite_facing == "front" then
             local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +

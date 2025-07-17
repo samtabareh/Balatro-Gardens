@@ -7,7 +7,7 @@
 	"prefix": "baga",
 	"main_file": "BalatroGardens.lua",
 	"priority": 100,
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"dependencies": [
 		"Steamodded (>=1.0.0~BETA-0711a)"
 	]

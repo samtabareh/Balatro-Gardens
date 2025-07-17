@@ -19,44 +19,39 @@ SMODS.Joker {
     atlas = "j_Ghosts",
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
-    config = { extra = { odds = 1000, multiplier = 1000000000 } },
+    config = { extra = { odds = 1000 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.odds, card.ability.extra.multiplier } }
+        return { vars = { card.ability.extra.odds } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            if pseudorandom("baga_infinity") < 1 / card.ability.extra.odds then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        play_sound("tarot1")
-                        card.T.r = -0.2
-                        card:juice_up(0.3, 0.4)
-                        card.states.drag.is = true
-                        card.children.center.pinch.x = true
-                        G.E_MANAGER:add_event(Event({
-                            trigger = "after",
-                            delay = 0.3,
-                            blockable = false,
-                            func = function()
-                                card:remove()
-                                return true
-                            end
-                        }))
-                        return true
-                    end
-                }))
-                return { message = "Went To Infinity!" }
-            end
+        if context.mod_probability and not context.blueprint then
+            return {
+                numerator = context.denominator
+            }
         end
-    end,
-    add_to_deck = function(self, card, from_debuff)
-        for k, v in pairs(G.GAME.probabilities) do
-            G.GAME.probabilities[k] = v * card.ability.extra.multiplier
-        end
-    end,
-    remove_from_deck = function(self, card, from_debuff)
-        for k, v in pairs(G.GAME.probabilities) do
-            G.GAME.probabilities[k] = v / card.ability.extra.multiplier
+        if context.end_of_round and context.game_over == false and
+        context.main_eval and not context.blueprint and
+        pseudorandom("baga_infinity") < 1 / card.ability.extra.odds then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound("tarot1")
+                    card.T.r = -0.2
+                    card:juice_up(0.3, 0.4)
+                    card.states.drag.is = true
+                    card.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 0.3,
+                        blockable = false,
+                        func = function()
+                            card:remove()
+                            return true
+                        end
+                    }))
+                    return true
+                end
+            }))
+            return { message = "Went To Infinity!" }
         end
     end
 }
@@ -78,11 +73,12 @@ SMODS.Joker {
             end
         else info_queue[#info_queue + 1] = G.P_CENTERS.e_negative end
 
-        return { vars = { G.GAME.probabilities.normal, #G.jokers.cards } }
+        local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, G.jokers and #G.jokers.cards or 1, "baga_tremor")
+        return { vars = { new_numerator, new_denominator } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and
-        pseudorandom("baga_tremor") < G.GAME.probabilities.normal / #G.jokers.cards then
+        SMODS.pseudorandom_probability(card, "baga_tremor", 1, #G.jokers.cards, "baga_tremor") then
             local eligible_jokers = SMODS.Edition:get_edition_cards(G.jokers, true)
             local joker = pseudorandom_element(eligible_jokers, pseudoseed("random_tremor"))
             if joker then
@@ -113,8 +109,8 @@ SMODS.Joker {
     pos = { x = 2, y = 0 },
     soul_pos = { x = 2, y = 1 },
     loc_vars = function(self, info_queue, card)
-        if not is_joker_frozen({ card = card }) and SMODS.Stickers.baga_frozen  then
-            info_queue[#info_queue+1] = SMODS.Stickers.baga_frozen
+        if not is_joker_frozen({ card = card }) and SMODS.Stickers and SMODS.Stickers.baga_frozen then
+            info_queue[#info_queue+1] = { key = SMODS.Stickers.baga_frozen.key, set = "Other", vars = SMODS.Stickers.baga_frozen:loc_vars(info_queue, card).vars }
         end
         
         if card.area and card.area == G.jokers then
@@ -163,31 +159,6 @@ SMODS.Joker {
         end
     end
 }
-function is_freezable(card)
-    local freezable_jokers = {
-        "The Idol",
-        "Ancient Joker",
-        "Castle",
-        "Mail-In Rebate",
-        "Invisible Joker",
-        "Hit the Road",
-        "Popcorn",
-        "Turtle Bean",
-        "Egg",
-        "To Do List",
-        "Loyalty Card"
-    }
-    local compatible = false
-    if card then
-        if card.ability.rental or card.ability.perishable then compatible = true end
-
-        for _, joker in ipairs(freezable_jokers) do
-            if compatible then break end
-            if joker == card.ability.name then compatible = true end
-        end
-    end
-    return compatible
-end
 
 --- Clouded
 SMODS.Joker {

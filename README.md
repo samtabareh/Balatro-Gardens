@@ -6,13 +6,13 @@
 
 ### Tarots
 
-- Ripped: Makes 1 highlighted card Wounded
+- Black Lotus: Adds a copy of 1 selected playing card to the deck
 
-- Black Lotus: Adds a copy of 1 highlighted playing card to the deck
+- Ripped: Makes 1 selected card Wounded
 
 ### Spectrals
 
-- Lethal: Destroys 3 highlighted playing cards
+- Lethal: Destroys 3 selected playing cards
 
 - Dig: Creates a Ghost Joker
 
@@ -34,7 +34,7 @@
 
 - Flutter: Gains 1X Mult when a card is destroyed, resets when Boss Blind is defeated
 
-- Lost: Destroys a random card held in hand at the end of round
+- Lost: Destroys 2 random cards held in hand at the end of round
 
 #### Ghost
 
@@ -58,7 +58,7 @@
 
 ### Decks
 
-- Infinite Tremors: Start with Eternal Infinity and Tremor
+- Infinite Tremors: Start with Infinity and Tremor
 
 ## Credits
 
