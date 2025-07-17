@@ -14,8 +14,8 @@ return {
                 name = "Wounded Card",
                 text = {
                     "{X:mult,C:white} X#1# {} Mult",
-                    "-{X:mult,C:white}X#2#{} every trigger",
-                    "Destroyed when {X:mult,C:white}Xmult{}",
+                    "{X:mult,C:white}-X#2#{} every trigger",
+                    "Destroyed when XMult",
                     "reaches 1"
                 },
             }

@@ -1,19 +1,23 @@
--- Decks
+-- Extras
 
---- Infinite Tremors
+local atlas = "Extras"
+
+--- Decks
+
+---- Infinite Tremors
 SMODS.Back {
     key = "infinite_tremors",
-	atlas = "Extras",
+	atlas = atlas,
 	pos = { x = 0, y = 0 },
     config = { jokers = { "j_baga_infinity", "j_baga_tremor" } }
 }
 
--- Enhancements
+--- Enhancements
 
---- Wounded
+---- Wounded
 SMODS.Enhancement {
     key = "wounded",
-    atlas = "Extras",
+    atlas = atlas,
     pos = { x = 0, y = 0 },
     config = { extra = { Xmult = 2, min = 1, decay = 0.2 } },
     loc_vars = function(self, info_queue, card)
@@ -45,9 +49,9 @@ SMODS.Enhancement {
     end
 }
 
--- Gradients
+--- Gradients
 
---- Clouded Cloud
+---- Clouded Cloud
 SMODS.Gradient {
     key = "clouded_cloud",
     colours = {
@@ -58,7 +62,7 @@ SMODS.Gradient {
     }
 }
 
---- Clouded Lightning
+---- Clouded Lightning
 SMODS.Gradient {
     key = "clouded_lightning",
     colours = {
@@ -67,7 +71,7 @@ SMODS.Gradient {
     }
 }
 
---- Frozen Ice
+---- Frozen Ice
 SMODS.Gradient {
     key = "frozen_ice",
     colours = {
@@ -77,7 +81,7 @@ SMODS.Gradient {
     }
 }
 
---- Infinity Ring
+---- Infinity Ring
 SMODS.Gradient {
     key = "infinity_ring",
     colours = {
@@ -87,7 +91,7 @@ SMODS.Gradient {
     }
 }
 
---- Tremor bat
+---- Tremor Bat
 SMODS.Gradient {
     key = "tremor_bat",
     colours = {
@@ -96,24 +100,13 @@ SMODS.Gradient {
     }
 }
 
--- Ownerships
+--- Stickers
 
---- Pluto
-SMODS.Consumable:take_ownership(
-    "pluto", {
-	atlas = "Pluto",
-    pos = { x = 0, y = 0 }
-    },
-    false
-)
-
--- Stickers
-
--- Frozen
+---- Frozen
 SMODS.Sticker {
     key = "frozen",
     badge_colour = HEX("afe4f2"),
-    atlas = "Extras",
+    atlas = atlas,
     pos = { x = 2, y = 0 },
     apply = function(self, card, val)
         card.ability[self.key] = val
@@ -148,12 +141,14 @@ function Card:calculate_frozen()
     end
 end
 
--- Vouchers
+--- Vouchers
 
---- Glory
+atlas = "Vouchers"
+
+---- Glory
 SMODS.Voucher {
     key = "glory",
-    atlas = "Vouchers",
+    atlas = atlas,
     pos = { x = 0, y = 0 },
     config = { extra = { addition = 1 } },
     loc_vars = function(self, info_queue, card)
@@ -167,21 +162,21 @@ SMODS.Voucher {
     end
 }
 
---- Victory
+---- Victory
 SMODS.Voucher {
     key = "victory",
-    atlas = "Vouchers",
+    atlas = atlas,
     pos = { x = 0, y = 0 },
-    config = { extra = { addition = 2 } },
+    config = { extra = { slots = 2 } },
     requires = { "v_baga_glory" },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.addition } }
+        return { vars = { card.ability.extra.slots } }
     end,
     redeem = function(self, card)
         G.E_MANAGER:add_event(Event({
             func = function()
                 if G.jokers then
-                    G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.addition
+                    G.jokers.config.card_limit = G.jokers.config.slots + card.ability.extra.slots
                 end
                 return true
             end,

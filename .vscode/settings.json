@@ -1,7 +1,11 @@
 {
     "Lua.workspace.library": [
         "C:/Users/RTS/AppData/Roaming/Balatro/Mods/smods",
-        "C:/Users/RTS/AppData/Roaming/Balatro/Mods/lovely/dump"
+        "C:/Users/RTS/OneDrive/Desktop/Balatro Modding/Balatro SOURCE"
     ],
-    "todo-tree.regex.regex": "--\\[\\[[\\s|\\n|\\r]*($TAGS)[\\s|\\n|\\r]*\\]\\]|--\\s*($TAGS)"
+    "todo-tree.regex.regex": "--\\[\\[[\\s|\\n|\\r]*($TAGS)[\\s|\\n|\\r]*\\]\\]|--\\s*($TAGS)",
+    "Lua.diagnostics.disable": [
+        "lowercase-global",
+        "duplicate-set-field"
+    ]
 }

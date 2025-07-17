@@ -1,32 +1,6 @@
 -- Atlases
 
---- Jokers
-
----- Uncommon
-SMODS.Atlas{
-    key = "j_Uncommons",
-    path = "j_Uncommons.png",
-    px = 71,
-    py = 95
-}
-
----- Rare
-SMODS.Atlas{
-    key = "j_Rares",
-    path = "j_Uncommons.png",
-    px = 71,
-    py = 95
-}
-
----- Ghost
-SMODS.Atlas{
-    key = "j_Ghosts",
-    path = "j_Ghosts.png",
-    px = 71,
-    py = 95
-}
-
---- Consumables (Tarots, Spectrals)
+--- Consumables
 SMODS.Atlas{
     key = "Consumables",
     path = "Tarots.png",
@@ -42,10 +16,28 @@ SMODS.Atlas{
     py = 95
 }
 
---- Pluto (The Pluto Planet Card)
+--- Jokers
+
+---- Uncommons
 SMODS.Atlas{
-    key = "Pluto",
-    path = "Pluto.png",
+    key = "j_Uncommons",
+    path = "j_Uncommons.png",
+    px = 71,
+    py = 95
+}
+
+---- Rares
+SMODS.Atlas{
+    key = "j_Rares",
+    path = "j_Uncommons.png",
+    px = 71,
+    py = 95
+}
+
+---- Ghosts
+SMODS.Atlas{
+    key = "j_Ghosts",
+    path = "j_Ghosts.png",
     px = 71,
     py = 95
 }

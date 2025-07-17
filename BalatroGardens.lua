@@ -1,6 +1,9 @@
-BalatroGardens = BalatroGardens or {}
+-- Balatro Gardens
 
--- Frozen
+BalatroGardens = BalatroGardens or {}
+BalatroGardens.mod_path = ""..SMODS.current_mod.path
+
+-- Frozen Sticker
 
 BalatroGardens.freezable_jokers = {
         "The Idol",
@@ -42,6 +45,8 @@ function is_joker_frozen(t)
     else return false end
 end
 
+-- Overrides
+
 local care_ref = Card.calculate_rental
 function Card:calculate_rental()
     if is_joker_frozen({ card = self }) then return end
@@ -79,11 +84,6 @@ function reset_mail_rank()
 end
 
 -- Load all the files
-
-assert(SMODS.load_file("src/Atlases.lua"))()
-assert(SMODS.load_file("src/Extras.lua"))()
-assert(SMODS.load_file("src/Tarots.lua"))()
-assert(SMODS.load_file("src/Spectrals.lua"))()
-assert(SMODS.load_file("src/Uncommons.lua"))()
-assert(SMODS.load_file("src/Rares.lua"))()
-assert(SMODS.load_file("src/Ghosts.lua"))()
+for _, file in ipairs(NFS.getDirectoryItems(BalatroGardens.mod_path.."src")) do
+    assert(SMODS.load_file("src/"..file))()
+end

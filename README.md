@@ -62,6 +62,6 @@
 
 ## Credits
 
-- [VanillaRemade](https://github.com/nh6574/VanillaRemade), for their amazing work, the code helped me a ton figuring out how Balatro modding works!
+- [VanillaRemade](https://github.com/nh6574/VanillaRemade) for their amazing work, the code helped me a ton figuring out how Balatro modding works!
 - [Unlike Pluto](https://www.youtube.com/@UnlikePluto) for making the best musich❤️
 - [Phuoc](https://www.instagram.com/phooknguyen) for the songs' amazing artworks!
