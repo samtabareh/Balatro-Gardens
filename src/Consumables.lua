@@ -120,6 +120,7 @@ SMODS.Consumable {
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
     end,
+    -- FIXME
     -- Thanks VanillaRemade 
     -- draw = function(self, card, layer)
     --     if (layer == "card" or layer == "both") and card.sprite_facing == "front" then
