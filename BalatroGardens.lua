@@ -3,6 +3,19 @@
 BalatroGardens = BalatroGardens or {}
 BalatroGardens.mod_path = ""..SMODS.current_mod.path
 
+-- Digs Ghost
+
+local gaup_ref = Game.update
+function Game:update(dt)
+	gaup_ref(self, dt)
+	if not G.SETTINGS.paused and G.ASSET_ATLAS["baga_Consumables"] and
+    BalatroGardens and not BalatroGardens.ghost then
+        BalatroGardens.ghost = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["baga_Consumables"], { x = 2, y = 1 })
+    end
+end
+
+
+
 -- Frozen Sticker
 
 BalatroGardens.freezable_jokers = {
@@ -15,8 +28,7 @@ BalatroGardens.freezable_jokers = {
         "Popcorn",
         "Turtle Bean",
         "Egg",
-        "To Do List",
-        "Loyalty Card"
+        "To Do List"
 }
 
 function is_freezable(card)

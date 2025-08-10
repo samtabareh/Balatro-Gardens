@@ -108,18 +108,3 @@ if self.ability.name == 'To Do List' and not is_joker_frozen({ card = self }) th
     local _poker_hands = {}
 '''
 match_indent = true
-
-# Loyalty Card Joker
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = '''
-if self.ability.name == 'Loyalty Card' then
-    self.ability.loyalty_remaining = (self.ability.extra.every-1-(G.GAME.hands_played - self.ability.hands_played_at_create))%(self.ability.extra.every+1)
-'''
-position = "at"
-payload = '''
-if self.ability.name == 'Loyalty Card' and not is_joker_frozen({ card = self }) then
-    self.ability.loyalty_remaining = (self.ability.extra.every-1-(G.GAME.hands_played - self.ability.hands_played_at_create))%(self.ability.extra.every+1)
-'''
-match_indent = true

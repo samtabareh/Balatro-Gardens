@@ -6,7 +6,7 @@ local rarity = 0
 
 --- Uncommons
 
-atlas = "j_Uncommons"
+atlas = "Jokers"
 rarity = 2
 
 ---- One on One
@@ -103,7 +103,6 @@ SMODS.Joker {
 
 --- Rares
 
-atlas = "j_Rares"
 rarity = 3
 
 ---- Flutter
@@ -178,7 +177,7 @@ SMODS.Joker {
 --- Ghosts
 
 rarity = "baga_ghost"
-atlas = "j_Ghosts"
+atlas = "Ghosts"
 
 SMODS.Rarity {
     key = "ghost",
@@ -308,7 +307,7 @@ SMODS.Joker {
                             n = G.UIT.C,
                             config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
                             nodes = {
-                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                                { n = G.UIT.T, config = { text = " " .. localize("k_" .. (compatible and "compatible" or "incompatible")) .. " ", colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
                             }
                         }
                     }
@@ -350,7 +349,7 @@ SMODS.Joker {
     config = {
         extra = {
             Xmult = 0,
-            Xmult_gain = {
+            Rarity_values = {
                 ["baga_ghost"] = 5,
                 ["cry_cursed"] = 2,
                 ["cry_epic"] = 3,
@@ -364,13 +363,14 @@ SMODS.Joker {
     calculate = function(self, card, context)
         for i = 1, #G.jokers.cards do
                 local joker = G.jokers.cards[i]
+                -- 
                 ---@type integer | string
                 local joker_rarity = joker.config.center.rarity
     
                 -- For when a jokers rarity is modded
                 if type(joker_rarity) == "string" then
-                    if card.ability.extra.Xmult_gain[joker_rarity] == nil then joker_rarity = 1
-                    else joker_rarity = card.ability.extra.Xmult_gain[joker_rarity] end
+                    if card.ability.extra.Rarity_values[joker_rarity] == nil then joker_rarity = 1
+                    else joker_rarity = card.ability.extra.Rarity_values[joker_rarity] end
                 end
                 
                 card.ability.extra.Xmult = card.ability.extra.Xmult + joker_rarity

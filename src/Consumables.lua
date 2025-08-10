@@ -101,8 +101,7 @@ SMODS.Consumable {
     key = "dig",
     set = "Spectral",
     atlas = atlas,
-    pos = { x = 1, y = 1 },
-    soul_pos = { x = 2, y = 1 },
+    pos = { x = 1, y = 0 },
     hidden = true,
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({
@@ -120,20 +119,30 @@ SMODS.Consumable {
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
     end,
-    -- FIXME
-    -- Thanks VanillaRemade 
-    -- draw = function(self, card, layer)
-    --     if (layer == "card" or layer == "both") and card.sprite_facing == "front" then
-    --         local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
-    --             0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
-    --             (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
-    --         local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
-    --             0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+    draw = function(self, card, layer)
+        if (layer == "card" or layer == "both") and card.sprite_facing == "front" then
+            card.children.center:draw_shader("booster", nil, card.ARGS.send_to_shader)
+        end
+    end
+}
 
-    --         G.shared_soul.role.draw_major = card
-    --         G.shared_soul:draw_shader("dissolve", 0, nil, nil, card.children.center, scale_mod, rotate_mod, nil,
-    --             0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
-    --         G.shared_soul:draw_shader("dissolve", nil, nil, nil, card.children.center, scale_mod, rotate_mod)
-    --     end
-    -- end
+-- Thanks VanillaRemade 
+SMODS.DrawStep {
+    key = "baga_ghost",
+    order = 50,
+    func = function(card)
+        if card.config.center.key == "c_baga_dig" and (card.config.center.discovered or card.bypass_discovery_center) then
+            local scale_mod = 0.05 + 0.05 * math.sin(1.8 * G.TIMERS.REAL) +
+                0.07 * math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL)) * math.pi * 14) *
+                (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 3
+            local rotate_mod = 0.1 * math.sin(1.219 * G.TIMERS.REAL) +
+                0.07 * math.sin((G.TIMERS.REAL) * math.pi * 5) * (1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL))) ^ 2
+
+            BalatroGardens.ghost.role.draw_major = card
+            BalatroGardens.ghost:draw_shader("dissolve", 0, nil, nil, card.children.center, scale_mod, rotate_mod, nil,
+                0.1 + 0.03 * math.sin(1.8 * G.TIMERS.REAL), nil, 0.6)
+            BalatroGardens.ghost:draw_shader("dissolve", nil, nil, nil, card.children.center, scale_mod, rotate_mod)
+        end
+    end,
+    conditions = { vortex = false, facing = "front" },
 }
