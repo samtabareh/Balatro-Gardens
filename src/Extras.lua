@@ -12,43 +12,6 @@ SMODS.Back {
     config = { jokers = { "j_baga_infinity", "j_baga_tremor" } }
 }
 
---- Enhancements
-
----- Wounded
-SMODS.Enhancement {
-    key = "wounded",
-    atlas = atlas,
-    pos = { x = 0, y = 0 },
-    config = { extra = { Xmult = 2, min = 1, decay = 0.2 } },
-    loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.Xmult, card.ability.extra.decay } }
-    end,
-    calculate = function(self, card, context)
-        if context.destroy_card and context.destroy_card == card and card.ability.extra.Xmult - card.ability.extra.decay <= card.ability.extra.min then
-            G.E_MANAGER:add_event(Event({
-                trigger = "after",
-                delay = 0.2,
-                func = function()
-                    card:start_dissolve()
-                    return true
-                end
-            }))
-        end
-        if context.main_scoring and context.cardarea == G.play then
-            local ret = {}
-            if card.ability.extra.Xmult - card.ability.extra.decay >= card.ability.extra.min then
-                card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.decay
-                ret = {
-                    message = "-X"..card.ability.extra.decay,
-                    colour = G.C.MULT
-                }
-            end
-            ret.xmult = card.ability.extra.Xmult
-            return ret
-        end
-    end
-}
-
 --- Gradients
 
 ---- Clouded Cloud
@@ -150,15 +113,24 @@ SMODS.Voucher {
     key = "glory",
     atlas = atlas,
     pos = { x = 0, y = 0 },
-    config = { extra = { addition = 1 } },
+    config = { extra = { antes = 1, slots = 1 } },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.addition } }
+        return { vars = { card.ability.extra.antes, card.ability.extra.slots } }
     end,
     redeem = function(self, card)
         -- Apply ante change
-        ease_ante(card.ability.extra.addition)
+        ease_ante(card.ability.extra.antes)
         G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante
-        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + card.ability.extra.addition
+        G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante + card.ability.extra.antes
+
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                if G.jokers then
+                    G.jokers.config.card_limit = G.jokers.config.slots - card.ability.extra.slots
+                end
+                return true
+            end,
+        }))
     end
 }
 
@@ -167,7 +139,7 @@ SMODS.Voucher {
     key = "victory",
     atlas = atlas,
     pos = { x = 0, y = 0 },
-    config = { extra = { slots = 2 } },
+    config = { extra = { slots = 3 } },
     requires = { "v_baga_glory" },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.slots } }

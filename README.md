@@ -8,7 +8,7 @@
 
 - Black Lotus: Adds a copy of 1 selected playing card to the deck
 
-- Ripped: Makes 1 selected card Wounded
+- Ripped: Destroys a random joker and gives 3X of its sell price
 
 ### Spectrals
 
@@ -24,13 +24,13 @@
 
 ####  Uncommon
 
-- One on One: 2X Mult if hand contains 2 different face cards (ex: J and Q or Q and K)
-
-- Fragile: Makes scored face cards Wounded
+- One on One: 2X Mult if hand contains 2 different scoring face cards (ex: J and Q or Q and K)
 
 - Misery: +0.25X Mult per face card held in hand when hand is played
 
 #### Rare
+
+- Fragile: Makes scored face cards Glass
 
 - Flutter: Gains 1X Mult when a card is destroyed, resets when Boss Blind is defeated
 
@@ -46,15 +46,11 @@
 
 - Clouded: Each owned joker adds 1X-5X Mult to this card based on its rarity
 
-### Enhancements
-
-- Wounded: 2X Mult. -0.2X when played (destroyed when multiplier reaches 1)
-
 ### Vouchers
 
-- Glory: +1 Ante
+- Glory: +1 Ante, -1 Joker Slot
 
-- Victory: +2 Joker Slots
+- Victory: +3 Joker Slots
 
 ### Decks
 

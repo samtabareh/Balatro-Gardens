@@ -2,17 +2,6 @@
 
 local atlas = "Consumables"
 
---- Planets
-
----- Pluto
-SMODS.Consumable:take_ownership(
-    "pluto", {
-	atlas = atlas,
-    pos = { x = 0, y = 0 }
-    },
-    false
-)
-
 --- Tarots
 
 ---- Lotus
@@ -55,10 +44,33 @@ SMODS.Consumable {
     set = "Tarot",
     atlas = atlas,
     pos = { x = 2, y = 0 },
-    config = { max_highlighted = 1, mod_conv = "m_baga_wounded" },
+    config = { extra = { cost_mult = 3 } },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
-        return { vars = { card.ability.max_highlighted, localize { type = "name_text", set = "Enhanced", key = card.ability.mod_conv } } }
+        return { vars = { card.ability.extra.cost_mult } }
+    end,
+    use = function(self, card, area, copier)
+        local deletable_jokers = {}
+        for _, joker in pairs(G.jokers.cards) do
+            if not SMODS.is_eternal(joker, card) then deletable_jokers[#deletable_jokers + 1] = joker end
+        end
+
+        local chosen_joker = pseudorandom_element(deletable_jokers, "baga_ripped")
+        if not chosen_joker then return end
+
+        local given_dollars = chosen_joker.cost * card.ability.extra.cost_mult / 2
+
+        G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            delay = 0.5,
+            func = function()
+                chosen_joker:start_dissolve(nil)
+                ease_dollars(given_dollars)
+                return true
+            end
+        }))
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
     end
 }
 
@@ -101,7 +113,7 @@ SMODS.Consumable {
     key = "dig",
     set = "Spectral",
     atlas = atlas,
-    pos = { x = 1, y = 0 },
+    pos = { x = 1, y = 1 },
     hidden = true,
     use = function(self, card, area, copier)
         G.E_MANAGER:add_event(Event({
@@ -146,3 +158,124 @@ SMODS.DrawStep {
     end,
     conditions = { vortex = false, facing = "front" },
 }
+
+--- Planets
+
+---- Pluto
+SMODS.Consumable:take_ownership(
+    "pluto", {
+    atlas = atlas,
+    pos = { x = 0, y = 0 }
+    },
+    false
+)
+
+atlas = "Planets"
+
+---- Eris
+SMODS.Consumable:take_ownership(
+    "eris", {
+        atlas = atlas,
+        pos = { x = 0, y = 0 }
+    },
+    true
+)
+
+---- Ceres
+SMODS.Consumable:take_ownership(
+    "ceres", {
+        atlas = atlas,
+        pos = { x = 1, y = 0 }
+    },
+    true
+)
+
+---- Planet X
+SMODS.Consumable:take_ownership(
+    "planet_x", {
+        atlas = atlas,
+        pos = { x = 2, y = 0 }
+    },
+    true
+)
+
+---- Mercury
+SMODS.Consumable:take_ownership(
+    "mercury", {
+        atlas = atlas,
+        pos = { x = 3, y = 0 }
+    },
+    true
+)
+
+---- Venus
+SMODS.Consumable:take_ownership(
+    "venus", {
+        atlas = atlas,
+        pos = { x = 0, y = 1 }
+    },
+    true
+)
+
+---- Earth
+SMODS.Consumable:take_ownership(
+    "earth", {
+        atlas = atlas,
+        pos = { x = 1, y = 1 }
+    },
+    true
+)
+
+---- Mars
+SMODS.Consumable:take_ownership(
+    "mars", {
+        atlas = atlas,
+        pos = { x = 2, y = 1 }
+    },
+    true
+)
+
+---- Jupiter
+SMODS.Consumable:take_ownership(
+    "jupiter", {
+        atlas = atlas,
+        pos = { x = 3, y = 1 }
+    },
+    true
+)
+
+---- Saturn
+SMODS.Consumable:take_ownership(
+    "saturn", {
+        atlas = atlas,
+        pos = { x = 0, y = 2 }
+    },
+    true
+)
+
+---- Uranus
+SMODS.Consumable:take_ownership(
+    "uranus", {
+        atlas = atlas,
+        pos = { x = 1, y = 2 }
+    },
+    true
+)
+
+---- Neptune
+SMODS.Consumable:take_ownership(
+    "neptune", {
+        atlas = atlas,
+        pos = { x = 2, y = 2 }
+    },
+    true
+)
+
+---- Black Hole
+SMODS.Consumable:take_ownership(
+    "black_hole", {
+        atlas = atlas,
+        pos = { x = 3, y = 2 }
+    },
+    true
+)

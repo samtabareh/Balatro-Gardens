@@ -25,6 +25,15 @@ SMODS.Atlas{
     px = 71,
     py = 95
 }
+
+--- Planets
+SMODS.Atlas{
+    key = "Planets",
+    path = "Planets.png",
+    px = 71,
+    py = 95
+}
+
 --- Vouchers
 SMODS.Atlas{
     key = "Vouchers",

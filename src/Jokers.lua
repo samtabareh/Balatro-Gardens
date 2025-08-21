@@ -35,38 +35,6 @@ SMODS.Joker {
     end
 }
 
----- Fragile
-SMODS.Joker {
-    key = "fragile",
-    blueprint_compat = false,
-    rarity = rarity,
-    cost = 6,
-    atlas = atlas,
-    pos = { x = 0, y = 0 },
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = G.P_CENTERS.m_baga_wounded
-    end,
-    calculate = function(self, card, context)
-        if context.before and context.main_eval and not context.blueprint then
-            local worked = false
-            
-            for _, scored_card in ipairs(context.scoring_hand) do
-                if scored_card:is_face() then
-                    worked = true
-                    scored_card:set_ability("m_baga_wounded", nil, true)
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            scored_card:juice_up()
-                            return true
-                        end
-                    }))
-                end
-            end
-            if worked then return { message = "Scarred!" } end
-        end
-    end
-}
-
 ---- Misery
 SMODS.Joker {
     key = "misery",
@@ -94,7 +62,7 @@ SMODS.Joker {
                 card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.add
             end
         end
-
+        
         if context.joker_main then
             return { Xmult = card.ability.extra.Xmult }
         end
@@ -104,6 +72,38 @@ SMODS.Joker {
 --- Rares
 
 rarity = 3
+
+---- Fragile
+SMODS.Joker {
+    key = "fragile",
+    blueprint_compat = false,
+    rarity = rarity,
+    cost = 7,
+    atlas = atlas,
+    pos = { x = 0, y = 0 },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
+    end,
+    calculate = function(self, card, context)
+        if context.before and context.main_eval and not context.blueprint then
+            local worked = false
+            
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if scored_card:is_face() then
+                    worked = true
+                    scored_card:set_ability("m_glass", nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            end
+            if worked then return { message = "Card of Me" } end
+        end
+    end
+}
 
 ---- Flutter
 SMODS.Joker {
@@ -145,7 +145,7 @@ SMODS.Joker {
     key = "lost",
     blueprint_compat = true,
     rarity = rarity,
-    cost = 7,
+    cost = 6,
     atlas = atlas,
     pos = { x = 0, y = 0 },
     config = { extra = { destroyed_cards = 2 } },

@@ -9,20 +9,8 @@ return {
                 }
             }
         },
-        Enhanced = {
-            m_baga_wounded = {
-                name = "Wounded Card",
-                text = {
-                    "{X:mult,C:white} X#1# {} Mult",
-                    "{X:mult,C:white}-X#2#{} every trigger",
-                    "Destroyed when XMult",
-                    "reaches 1"
-                },
-            }
-        },
         Joker = {
             -- Uncommons
-
             j_baga_one_on_one = {
                 name = "One on One",
                 text = {
@@ -32,23 +20,24 @@ return {
                     "{C:inactive}(ex: {C:attention}J Q, Q K{C:inactive})",
                 }
             },
-            j_baga_fragile = {
-                name = "Fragile",
-                text = {
-                    "All played {C:attention}face{} cards",
-                    "become {C:attention}Wounded{} cards",
-                    "when scored",
-                }
-            },
             j_baga_misery = {
                 name = "Misery",
                 text = {
                     "Each {C:attention}face{} card held",
-                    "in hand adds {X:mult,C:white}X#1#{} Mult"
+                    "in hand adds {X:mult,C:white}X#1#{} Mult",
+                    "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive})"
                 }
             },
-            -- Rares
 
+            -- Rares
+            j_baga_fragile = {
+                name = "Fragile",
+                text = {
+                    "All played {C:attention}face{} cards",
+                    "become {C:attention}Glass{} cards",
+                    "when scored",
+                }
+            },
             j_baga_flutter = {
                 name = "Flutter",
                 text = {
@@ -116,13 +105,7 @@ return {
         },
         Planet = {
             c_pluto = {
-                name = "UP",
-                text = {
-                    "{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
-                    "{C:attention}#2#",
-                    "{C:mult}+#3#{} Mult and",
-                    "{C:chips}+#4#{} chips"
-                }
+                name = "UP"
             }
         },
         Spectral = {
@@ -153,11 +136,25 @@ return {
             c_baga_ripped = {
                 name = "The Ripped",
                 text = {
-                    "Enhances {C:attention}#1#{} selected",
-                    "card into a",
-                    "{C:attention}#2#",
+                    "Destroys a {C:attention}random Joker{} and",
+                    "gives {X:money,C:white}#1#X{} of its sell price"
                 }
             }
+        },
+        Voucher = {
+            v_baga_glory = {
+                name = "Glory",
+                text = {
+                    "{C:attention}-#1#{} Ante,",
+                    "{C:dark_edition}-#2#{} Joker Slot",
+                }
+            },
+            v_baga_victory = {
+                name = "Victory",
+                text = {
+                    "{C:dark_edition}+#1#{} Joker Slots",
+                }
+            },
         }
     },
     
