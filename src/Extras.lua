@@ -106,13 +106,11 @@ end
 
 --- Vouchers
 
-atlas = "Vouchers"
-
 ---- Glory
 SMODS.Voucher {
     key = "glory",
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 0 },
     config = { extra = { antes = 1, slots = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.antes, card.ability.extra.slots } }
@@ -138,7 +136,7 @@ SMODS.Voucher {
 SMODS.Voucher {
     key = "victory",
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 1 },
     config = { extra = { slots = 3 } },
     requires = { "v_baga_glory" },
     loc_vars = function(self, info_queue, card)

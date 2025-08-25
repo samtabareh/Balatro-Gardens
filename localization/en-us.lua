@@ -145,7 +145,7 @@ return {
             v_baga_glory = {
                 name = "Glory",
                 text = {
-                    "{C:attention}-#1#{} Ante,",
+                    "{C:attention}+#1#{} Ante,",
                     "{C:dark_edition}-#2#{} Joker Slot",
                 }
             },

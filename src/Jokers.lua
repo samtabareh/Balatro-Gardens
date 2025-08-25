@@ -42,30 +42,29 @@ SMODS.Joker {
     rarity = rarity,
     cost = 7,
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 0 },
     config = { extra = { Xmult = 1, Xmult_gain = 0.25 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Xmult_gain, card.ability.extra.Xmult } }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.after then
+        if not context.blueprint then
+            -- Reset X Mult
             card.ability.extra.Xmult = 1
-        end
-        
-        if context.individual and context.cardarea == G.hand and not context.end_of_round and context.other_card:is_face() and not context.blueprint then
-            if context.other_card.debuff then
-                return {
-                    message = localize("k_debuffed"),
-                    colour = G.C.RED
-                }
-            else
-                card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.add
+            
+            -- Add to X Mult
+            for _, _card in ipairs(G.hand.cards) do
+                if _card:is_face() and not _card.debuff then
+                    card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_gain
+                end
             end
         end
-        
+
+        -- Apply X Mult
         if context.joker_main then
             return { Xmult = card.ability.extra.Xmult }
         end
+
     end
 }
 
@@ -80,7 +79,7 @@ SMODS.Joker {
     rarity = rarity,
     cost = 7,
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 2, y = 0 },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
     end,
@@ -113,7 +112,7 @@ SMODS.Joker {
     rarity = rarity,
     cost = 7,
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 0, y = 1 },
     config = { extra = { Xmult = 1, Xmult_gain = 1 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Xmult_gain, card.ability.extra.Xmult } }
@@ -147,7 +146,7 @@ SMODS.Joker {
     rarity = rarity,
     cost = 6,
     atlas = atlas,
-    pos = { x = 0, y = 0 },
+    pos = { x = 1, y = 1 },
     config = { extra = { destroyed_cards = 2 } },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.destroyed_cards } }
@@ -358,12 +357,17 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.Xmult } }
+        return { vars = { card.ability.extra.Xmult or 1 } }
     end,
     calculate = function(self, card, context)
-        for i = 1, #G.jokers.cards do
+        if not context.blueprint then
+            -- Reset X Mult
+            card.ability.extra.Xmult = 0
+            
+            -- Set X Mult
+            for i = 1, #G.jokers.cards do
                 local joker = G.jokers.cards[i]
-                -- 
+
                 ---@type integer | string
                 local joker_rarity = joker.config.center.rarity
     
@@ -375,8 +379,9 @@ SMODS.Joker {
                 
                 card.ability.extra.Xmult = card.ability.extra.Xmult + joker_rarity
             end
+        end
 
-        if context.joker_main then
+        if context.joker_main and card.ability.extra.Xmult ~= 0 then
             return { Xmult = card.ability.extra.Xmult }
         end
     end

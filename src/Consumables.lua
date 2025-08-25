@@ -4,10 +4,12 @@ local atlas = "Consumables"
 
 --- Tarots
 
+local set = "Tarot"
+
 ---- Lotus
 SMODS.Consumable {
     key = "lotus",
-    set = "Tarot",
+    set = set,
     atlas = atlas,
     pos = { x = 1, y = 0 },
     config = { max_highlighted = 1, extra = { cards = 1 } },
@@ -41,7 +43,7 @@ SMODS.Consumable {
 ---- Ripped
 SMODS.Consumable {
     key = "ripped",
-    set = "Tarot",
+    set = set,
     atlas = atlas,
     pos = { x = 2, y = 0 },
     config = { extra = { cost_mult = 3 } },
@@ -76,10 +78,12 @@ SMODS.Consumable {
 
 --- Spectrals
 
+set = "Spectral"
+
 ---- Lethal
 SMODS.Consumable {
     key = "lethal",
-    set = "Spectral",
+    set = set,
     atlas = atlas,
     pos = { x = 0, y = 1 },
     config = { max_highlighted = 3 },
@@ -111,7 +115,7 @@ SMODS.Consumable {
 --- Dig
 SMODS.Consumable {
     key = "dig",
-    set = "Spectral",
+    set = set,
     atlas = atlas,
     pos = { x = 1, y = 1 },
     hidden = true,
@@ -160,6 +164,8 @@ SMODS.DrawStep {
 }
 
 --- Planets
+
+set = "Planet"
 
 ---- Pluto
 SMODS.Consumable:take_ownership(
