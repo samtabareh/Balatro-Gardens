@@ -70,7 +70,7 @@ SMODS.Sticker {
     key = "frozen",
     badge_colour = HEX("afe4f2"),
     atlas = atlas,
-    pos = { x = 2, y = 0 },
+    pos = { x = 0, y = 1 },
     apply = function(self, card, val)
         card.ability[self.key] = val
     end,
@@ -91,13 +91,13 @@ function Card:calculate_frozen()
     local joker
     for i = 1, #G.jokers.cards do if G.jokers.cards[i] == self then joker = G.jokers.cards[i + 1] end end
     
-    if joker and joker.ability.name == "j_baga_frozen" then return end
+    if joker and joker.ability.name == BalatroGardens.Jokers.Frozen.key then return end
 
     -- Unfreeze
     if self.ability.baga_frozen then
         self.ability.baga_frozen = false
         card_eval_status_text(self, "extra", nil, nil, nil, {
-            message = "Unfrozen!",
+            message = localize("k_unfrozen"),
             colour = G.C.FROZEN_ICE,
             delay = 0.45
         })
@@ -124,7 +124,7 @@ SMODS.Voucher {
         G.E_MANAGER:add_event(Event({
             func = function()
                 if G.jokers then
-                    G.jokers.config.card_limit = G.jokers.config.slots - card.ability.extra.slots
+                    G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
                 end
                 return true
             end,
@@ -146,7 +146,7 @@ SMODS.Voucher {
         G.E_MANAGER:add_event(Event({
             func = function()
                 if G.jokers then
-                    G.jokers.config.card_limit = G.jokers.config.slots + card.ability.extra.slots
+                    G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.slots
                 end
                 return true
             end,

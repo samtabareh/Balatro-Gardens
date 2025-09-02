@@ -1,4 +1,5 @@
 -- Jokers
+BalatroGardens.Jokers = {}
 
 local atlas = ""
 ---@type integer | string
@@ -10,7 +11,7 @@ atlas = "Jokers"
 rarity = 2
 
 ---- One on One
-SMODS.Joker {
+BalatroGardens.Jokers.One_On_One = {
     key = "one_on_one",
     blueprint_compat = true,
     rarity = rarity,
@@ -26,8 +27,20 @@ SMODS.Joker {
             local ranks = {}
             for i = 1, #context.scoring_hand do
                 local _c = context.scoring_hand[i]
-                if _c:is_face() and not ranks[_c:get_id()] then ranks[_c:get_id()] = 1 end
+                local condition = (
+                    function (ranks, id)
+                        local temp = false
+                        for _, rank in ipairs(ranks) do temp = rank == id and true or temp end
+                        return temp
+                    end
+                ) (ranks, _c:get_id())
+
+                if _c:is_face() and not condition
+                     then ranks[#ranks+1] = _c:get_id() end
             end
+
+            print(inspect(JokerDisplay.Definitions["j_baga_one_on_one"]))
+
             if #ranks >= 2 then
                 return { Xmult = card.ability.extra.Xmult }
             end
@@ -36,7 +49,7 @@ SMODS.Joker {
 }
 
 ---- Misery
-SMODS.Joker {
+BalatroGardens.Jokers.Misery = {
     key = "misery",
     blueprint_compat = true,
     rarity = rarity,
@@ -54,7 +67,7 @@ SMODS.Joker {
             
             -- Add to X Mult
             for _, _card in ipairs(G.hand.cards) do
-                if _card:is_face() and not _card.debuff then
+                if _card:is_face() and not _card.highlighted and not _card.debuff then
                     card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_gain
                 end
             end
@@ -73,7 +86,7 @@ SMODS.Joker {
 rarity = 3
 
 ---- Fragile
-SMODS.Joker {
+BalatroGardens.Jokers.Fragile = {
     key = "fragile",
     blueprint_compat = false,
     rarity = rarity,
@@ -99,13 +112,13 @@ SMODS.Joker {
                     }))
                 end
             end
-            if worked then return { message = "Card of Me" } end
+            if worked then return { message = localize("k_fragile_card") } end
         end
     end
 }
 
 ---- Flutter
-SMODS.Joker {
+BalatroGardens.Jokers.Flutter = {
     key = "flutter",
     blueprint_compat = true,
     perishable_compat = false,
@@ -118,11 +131,13 @@ SMODS.Joker {
         return { vars = { card.ability.extra.Xmult_gain, card.ability.extra.Xmult } }
     end,
     calculate = function(self, card, context)
+        -- Increment
         if context.remove_playing_cards and not context.blueprint then
             card.ability.extra.Xmult = card.ability.extra.Xmult + #context.removed * card.ability.extra.Xmult_gain
             return { message = localize { type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } } }
         end
         
+        -- Reset
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
             if G.GAME.blind.boss and card.ability.extra.Xmult > 1 then
                 card.ability.extra.Xmult = 1
@@ -140,7 +155,7 @@ SMODS.Joker {
 }
 
 ---- Lost
-SMODS.Joker {
+BalatroGardens.Jokers.Lost = {
     key = "lost",
     blueprint_compat = true,
     rarity = rarity,
@@ -152,23 +167,21 @@ SMODS.Joker {
         return { vars = { card.ability.extra.destroyed_cards } }
     end,
     calculate = function(self, card, context)
-		if context.end_of_round and context.cardarea == G.jokers then
-			for i = 1, card.ability.extra.destroyed_cards do
+		if context.end_of_round and context.cardarea == G.jokers and #G.hand.cards > 0 then
+            local cards_to_destroy = {}
+            local max_cards = card.ability.extra.destroyed_cards <= #G.hand.cards and
+            card.ability.extra.destroyed_cards or #G.hand.cards
+			
+            while #cards_to_destroy < max_cards do
                 -- Select a random card from hand to destroy
                 local _card = pseudorandom_element(G.hand.cards, pseudoseed("baga_lost"))
                 
-                if _card then
-                    G.E_MANAGER:add_event(Event({
-                            trigger = "before",
-                            delay = 0.25,
-                            func = function()
-                                _card:start_dissolve(nil, true)
-                                return true
-                            end,
-                    }))
+                if _card and (#cards_to_destroy > 0 and cards_to_destroy[1] ~= _card or true) then
+                    cards_to_destroy[#cards_to_destroy+1] = _card
                 end
             end
-            return { message = "Lost!" }
+            SMODS.destroy_cards(cards_to_destroy)
+            return { message = localize("k_lost") }
 		end
 	end
 }
@@ -187,7 +200,7 @@ SMODS.Rarity {
 }
 
 ---- Infinity
-SMODS.Joker {
+BalatroGardens.Jokers.Infinity = {
     key = "infinity",
     blueprint_compat = false,
     rarity = rarity,
@@ -227,13 +240,13 @@ SMODS.Joker {
                     return true
                 end
             }))
-            return { message = "Went To Infinity!" }
+            return { message = localize("k_to_infinity") }
         end
     end
 }
 
 ---- Tremor
-SMODS.Joker {
+BalatroGardens.Jokers.Tremor = {
     key = "tremor",
     blueprint_compat = true,
     rarity = rarity,
@@ -271,11 +284,11 @@ SMODS.Joker {
                 }))
             end
         end
-    end,
+    end
 }
 
 ---- Frozen
-SMODS.Joker {
+BalatroGardens.Jokers.Frozen = {
     key = "frozen",
     rarity = rarity,
     blueprint_compat = true,
@@ -321,15 +334,13 @@ SMODS.Joker {
             local joker
             for i = 1, #G.jokers.cards do if card == G.jokers.cards[i] then joker = G.jokers.cards[i - 1] end end
             
-            
-
             -- Applying sticker
             if joker and is_freezable(joker) then
                 SMODS.Stickers.baga_frozen:apply(joker, true)
             end
 
             return {
-                message = "Frozen!",
+                message = localize("k_frozen"),
                 colour = G.C.FROZEN_ICE
             }
         end
@@ -337,7 +348,7 @@ SMODS.Joker {
 }
 
 ---- Clouded
-SMODS.Joker {
+BalatroGardens.Jokers.Clouded = {
     key = "clouded",
     blueprint_compat = true,
     rarity = rarity,
@@ -381,8 +392,12 @@ SMODS.Joker {
             end
         end
 
-        if context.joker_main and card.ability.extra.Xmult ~= 0 then
+        if context.joker_main then
             return { Xmult = card.ability.extra.Xmult }
         end
     end
 }
+
+for _, name in ipairs(BalatroGardens.LoadOrder.Jokers) do
+    SMODS.Joker(BalatroGardens.Jokers[name])
+end

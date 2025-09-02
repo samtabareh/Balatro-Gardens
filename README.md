@@ -26,7 +26,7 @@
 
 - One on One: 2X Mult if hand contains 2 different scoring face cards (ex: J and Q or Q and K)
 
-- Misery: +0.25X Mult per face card held in hand when hand is played
+- Misery: Each face card held in hand counts as 0.25X Mult
 
 #### Rare
 

@@ -2,41 +2,58 @@
 
 BalatroGardens = BalatroGardens or {}
 BalatroGardens.mod_path = ""..SMODS.current_mod.path
+BalatroGardens.prefix = SMODS.current_mod.prefix
+BalatroGardens.LoadOrder = {
+	Consumables = {
+		"Lotus",
+		"Ripped",
+		"Lethal",
+		"Dig"
+	},
+	Jokers = {
+		"One_On_One",
+		"Misery",
+		"Fragile",
+		"Flutter",
+		"Lost",
+		"Infinity",
+		"Tremor",
+		"Frozen",
+		"Clouded"
+	}
+}
 
 -- Digs Ghost
 
 local gaup_ref = Game.update
 function Game:update(dt)
 	gaup_ref(self, dt)
-	if not G.SETTINGS.paused and G.ASSET_ATLAS["baga_Consumables"] and
-    BalatroGardens and not BalatroGardens.ghost then
+	if not G.SETTINGS.paused and G.ASSET_ATLAS["baga_Consumables"] and not BalatroGardens.ghost then
         BalatroGardens.ghost = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["baga_Consumables"], { x = 2, y = 1 })
     end
 end
 
-
-
 -- Frozen Sticker
 
-BalatroGardens.freezable_jokers = {
-        "The Idol",
-        "Ancient Joker",
-        "Castle",
-        "Mail-In Rebate",
-        "Invisible Joker",
-        "Hit the Road",
-        "Popcorn",
-        "Turtle Bean",
-        "Egg",
-        "To Do List"
+BalatroGardens.FreezableJokers = {
+	"The Idol",
+	"Ancient Joker",
+	"Castle",
+	"Mail-In Rebate",
+	"Invisible Joker",
+	"Hit the Road",
+	"Popcorn",
+	"Turtle Bean",
+	"Egg",
+	"To Do List"
 }
 
 function is_freezable(card)
     local compatible = false
     if card then
         if card.ability.rental or card.ability.perishable then compatible = true end
-
-        for _, joker in ipairs(BalatroGardens.freezable_jokers) do
+		
+        for _, joker in ipairs(BalatroGardens.FreezableJokers) do
             if compatible then break end
             if joker == card.ability.name then compatible = true end
         end
@@ -46,7 +63,7 @@ end
 
 function is_joker_frozen(t)
     if not G.jokers then return false end
-
+	
     if t.name then
         for i = 1, #G.jokers.cards do
             local joker = G.jokers.cards[i]
@@ -95,7 +112,13 @@ function reset_mail_rank()
     rema_ref()
 end
 
--- Load all the files
-for _, file in ipairs(NFS.getDirectoryItems(BalatroGardens.mod_path.."src")) do
-    assert(SMODS.load_file("src/"..file))()
+-- Load files
+local folders = {
+	"src",
+	"other mods"
+}
+for _, folder in ipairs(folders) do
+	for _, file in ipairs(NFS.getDirectoryItems(BalatroGardens.mod_path..folder)) do
+		assert(SMODS.load_file(folder.."/"..file))()
+	end
 end

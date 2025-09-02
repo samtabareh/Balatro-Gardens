@@ -17,14 +17,14 @@ return {
                     "{X:mult,C:white} X#1# {} Mult if hand",
                     "has scoring {C:attention}face{} cards",
                     "with different {C:attention}ranks",
-                    "{C:inactive}(ex: {C:attention}J Q, Q K{C:inactive})",
+                    "{C:inactive}(ex: {C:attention}J, Q or Q, K{C:inactive})",
                 }
             },
             j_baga_misery = {
                 name = "Misery",
                 text = {
-                    "Each {C:attention}face{} card held",
-                    "in hand adds {X:mult,C:white}X#1#{} Mult",
+                    "Each {C:attention}face{} card held in",
+                    "hand counts as {X:mult,C:white}X#1#{} Mult",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive})"
                 }
             },
@@ -41,17 +41,17 @@ return {
             j_baga_flutter = {
                 name = "Flutter",
                 text = {
-                    "This Joker gains {X:mult,C:white}X#1#{} Mult",
-                    "for every {C:attention}destroyed{} card, resets",
-                    "when {C:attention}Boss Blind{} is defeated",
+                    "This Joker gains {X:mult,C:white}X#1#{} Mult for",
+                    "every {C:attention}destroyed{} playing card",
+                    "resets when {C:attention}Boss Blind{} is defeated",
                     "{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
                 }
             },
             j_baga_lost = {
                 name = "Lost",
                 text = {
-                    "Destroys {C:attention}2 random{} cards",
-                    "held in hand at",
+                    "Destroys {C:attention}2 random",
+                    "cards held in hand at",
                     "the end of round"
                 }
             },
@@ -97,7 +97,7 @@ return {
             baga_frozen = {
                 name = "Frozen",
                 text = {
-                    "Freezes values of round-based",
+                    "Freezes round-based",
                     "Jokers and Stickers",
                     "for {C:attention}#1#{} round"
                 }
@@ -160,7 +160,13 @@ return {
     
     misc = {
         dictionary = {
-            k_baga_ghost = "Ghost"
+            k_baga_ghost = "Ghost",
+            k_different_face_cards = "Different Face Cards",
+            k_fragile_card = "Card of Me",
+            k_frozen = "Frozen!",
+            k_lost = "Lost!",
+            k_unfrozen = "Unfrozen!",
+            k_to_infinity = "Went To Infinity!",
         },
         labels = {
             baga_ghost = "Ghost",

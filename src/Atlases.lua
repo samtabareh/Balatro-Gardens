@@ -1,9 +1,17 @@
 -- Atlases
 
+--- Mod Icon
+SMODS.Atlas {
+    key = "modicon",
+    path = "Icon.png",
+    px = 32,
+    py = 32
+}
+
 --- Jokers
 
 ---- Uncommons
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Jokers",
     path = "Jokers.png",
     px = 71,
@@ -11,7 +19,7 @@ SMODS.Atlas{
 }
 
 ---- Ghosts
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Ghosts",
     path = "Ghosts.png",
     px = 71,
@@ -19,7 +27,7 @@ SMODS.Atlas{
 }
 
 --- Consumables
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Consumables",
     path = "Tarots.png",
     px = 71,
@@ -27,7 +35,7 @@ SMODS.Atlas{
 }
 
 --- Planets
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Planets",
     path = "Planets.png",
     px = 71,
@@ -35,7 +43,7 @@ SMODS.Atlas{
 }
 
 --- Vouchers
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Vouchers",
     path = "Jokers.png",
     px = 71,
@@ -43,7 +51,7 @@ SMODS.Atlas{
 }
 
 --- Extras (Enhancements, Decks)
-SMODS.Atlas{
+SMODS.Atlas {
     key = "Extras",
     path = "Extras.png",
     px = 71,

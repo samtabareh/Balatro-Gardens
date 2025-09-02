@@ -1,4 +1,5 @@
 -- Consumables
+BalatroGardens.Consumables = {}
 
 local atlas = "Consumables"
 
@@ -7,7 +8,7 @@ local atlas = "Consumables"
 local set = "Tarot"
 
 ---- Lotus
-SMODS.Consumable {
+BalatroGardens.Consumables.Lotus = {
     key = "lotus",
     set = set,
     atlas = atlas,
@@ -41,7 +42,7 @@ SMODS.Consumable {
 }
 
 ---- Ripped
-SMODS.Consumable {
+BalatroGardens.Consumables.Ripped = {
     key = "ripped",
     set = set,
     atlas = atlas,
@@ -59,7 +60,7 @@ SMODS.Consumable {
         local chosen_joker = pseudorandom_element(deletable_jokers, "baga_ripped")
         if not chosen_joker then return end
 
-        local given_dollars = chosen_joker.cost * card.ability.extra.cost_mult / 2
+        local given_dollars = (chosen_joker.cost / 2) * card.ability.extra.cost_mult
 
         G.E_MANAGER:add_event(Event({
             trigger = "after",
@@ -81,7 +82,7 @@ SMODS.Consumable {
 set = "Spectral"
 
 ---- Lethal
-SMODS.Consumable {
+BalatroGardens.Consumables.Lethal = {
     key = "lethal",
     set = set,
     atlas = atlas,
@@ -113,7 +114,7 @@ SMODS.Consumable {
 }
 
 --- Dig
-SMODS.Consumable {
+BalatroGardens.Consumables.Dig = {
     key = "dig",
     set = set,
     atlas = atlas,
@@ -285,3 +286,7 @@ SMODS.Consumable:take_ownership(
     },
     true
 )
+
+for _, name in ipairs(BalatroGardens.LoadOrder.Consumables) do
+    SMODS.Consumable(BalatroGardens.Consumables[name])
+end
