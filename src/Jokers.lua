@@ -39,8 +39,6 @@ BalatroGardens.Jokers.One_On_One = {
                      then ranks[#ranks+1] = _c:get_id() end
             end
 
-            print(inspect(JokerDisplay.Definitions["j_baga_one_on_one"]))
-
             if #ranks >= 2 then
                 return { Xmult = card.ability.extra.Xmult }
             end
