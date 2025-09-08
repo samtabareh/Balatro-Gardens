@@ -88,9 +88,7 @@ BalatroGardens.JokerDisplay = {
     },
     Tremor = {
         text = {
-            {
-                { text = localize("negative", "labels") }
-            }
+            { text = localize("negative", "labels"), colour = G.C.DARK_EDITION }
         },
         extra = {
             {
