@@ -297,9 +297,17 @@ BalatroGardens.Jokers.Frozen = {
     soul_pos = { x = 2, y = 1 },
     loc_vars = function(self, info_queue, card)
         if not is_joker_frozen({ card = card }) and SMODS.Stickers and SMODS.Stickers.baga_frozen then
-            info_queue[#info_queue+1] = { key = SMODS.Stickers.baga_frozen.key, set = "Other", vars = SMODS.Stickers.baga_frozen:loc_vars(info_queue, card).vars }
+            info_queue[#info_queue+1] = {
+                key = SMODS.Stickers.baga_frozen.key,
+                set = "Other",
+                vars = SMODS.Stickers.baga_frozen:loc_vars(info_queue, card).vars
+            }
         end
         
+        info_queue[#info_queue+1] = { key = "baga_freezable_jokers", set = "Other" }
+        info_queue[#info_queue+1] = { key = "baga_freezable_editions", set = "Other" }
+        
+        -- Compatibility thingy
         if card.area and card.area == G.jokers then
             local other_joker
             for i = 1, #G.jokers.cards do

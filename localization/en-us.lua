@@ -101,7 +101,22 @@ return {
                     "Jokers and Stickers",
                     "for {C:attention}#1#{} round"
                 }
-            }
+            },
+            baga_freezable_jokers = {
+                name = "Freezable Jokers",
+                text = {
+                    "{C:attention}The Idol{}, {C:attention}Ancient Joker{}, {C:attention}Castle{},",
+                    "{C:attention}Mail-In Rebate{}, {C:attention}Invisible Joker{},",
+                    "{C:attention}Hit the Road{}, {C:attention}Popcorn{}, {C:attention}Egg{},",
+                    "{C:attention}Turtle Bean{}, {C:attention}To Do List"
+                }
+            },
+            baga_freezable_editions = {
+                name = "Freezable Editions",
+                text = {
+                    "{C:attention}Rental{}, {C:attention}Perishable"
+                }
+            } 
         },
         Planet = {
             c_pluto = {
